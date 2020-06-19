@@ -5,8 +5,20 @@ from time import sleep
 
 server = "127.0.0.1"
 port = 7777
-max_clients = 3
+max_clients = 4
 num_clients = 0
+
+if len(sys.argv) == 2:
+	max_clients = int(sys.argv[1])
+
+if len(sys.argv) == 3:
+	max_clients = int(sys.argv[1])
+	server = sys.argv[2]
+
+if len(sys.argv) == 4:
+	max_clients = int(sys.argv[1])
+	server = sys.argv[2]
+	port = int(sys.argv[3])
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 

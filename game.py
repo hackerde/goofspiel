@@ -1,5 +1,6 @@
 import random
 import pygame
+import sys
 from time import sleep
 
 from client import Client
@@ -128,7 +129,17 @@ def print_result(Players):
 
 # main
 
-c = Client()
+server = "127.0.0.1"
+port = 7777
+
+if len(sys.argv) == 2:
+	server = sys.argv[1]
+
+if len(sys.argv) == 3:
+	server = sys.argv[1]
+	port = int(sys.argv[2])
+
+c = Client(server, port)
 main_player_id = c.getID()
 num_players = c.getPlayers()
 players = []
@@ -141,13 +152,8 @@ for i in range(num_players):
 		players.append(Player(i, 1))
 
 
-c.send("%d: Created all players." %main_player_id)
+c.send("%d: Ready to start." %main_player_id)
 
-#p2 = Player(2, 1)
-# p3 = Player(3, 1)
-# p4 = Player(4, 1)
-# main_player = p1
-# players = [main_player, p2, p3, p4]
 play_game(players, main_player)
 print_result(players)
 pygame.quit()

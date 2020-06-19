@@ -1,10 +1,10 @@
 import socket
 
 class Client:
-	def __init__(self):
+	def __init__(self, s="127.0.0.1", p=7777):
 		self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-		self.server = "127.0.0.1"
-		self.port = 7777
+		self.server = s
+		self.port = p
 		self.addr = (self.server, self.port)
 		self.id, self.num_clients = self.parse(self.connect())
 		self.card = ""
