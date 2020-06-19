@@ -94,6 +94,7 @@ def play_game(Players, main_player):
 					redrawWindow(main_player.hand.values(), table, win)
 				
 				played = player.play(played)
+				redrawWindow(main_player.hand.values(), table, win)
 				c.send("%d,%d" %(main_player.id, played.value))
 				info = c.recv().split(",")
 				for i in range(len(Players)-1):
