@@ -99,6 +99,13 @@ def play_game(Players, main_player):
 				for i in range(len(Players)-1):
 					moves[int(info[2*i])] = int(info[2*i+1])
 
+			elif player.type == 2:
+				played = player.play(random.choice(list(player.getCards())))
+				table.append(played)
+				c.send("%d,%d" %(main_player.id, played.value))
+				info = c.recv().split(",")
+				for i in range(len(Players)-1):
+					moves[int(info[2*i])] = int(info[2*i+1])
 			else:
 				played = player.play(moves[player.id])
 				table.append(played)
@@ -131,13 +138,29 @@ def print_result(Players):
 
 server = "127.0.0.1"
 port = 7777
+computer = False
 
 if len(sys.argv) == 2:
-	server = sys.argv[1]
+	if sys.argv[1] == '-c' or sys.argv[1] == '--comp':
+		computer = True
+	elif sys.argv[1] == '-p' or sys.argv[1] == '--player':
+		computer = False
 
 if len(sys.argv) == 3:
-	server = sys.argv[1]
-	port = int(sys.argv[2])
+	if sys.argv[1] == '-c' or sys.argv[1] == '--comp':
+		computer = True
+	elif sys.argv[1] == '-p' or sys.argv[1] == '--player':
+		computer = False
+	server = sys.argv[2]
+
+if len(sys.argv) == 4:
+	if sys.argv[1] == '-c' or sys.argv[1] == '--comp':
+		computer = True
+	elif sys.argv[1] == '-p' or sys.argv[1] == '--player':
+		computer = False
+	server = sys.argv[2]
+	port = int(sys.argv[3])
+	
 
 c = Client(server, port)
 main_player_id = c.getID()
@@ -146,7 +169,10 @@ players = []
 
 for i in range(num_players):
 	if i == main_player_id:
-		main_player = Player(i)
+		if computer:
+			main_player = Player(i,2)
+		else:
+			main_player = Player(i)
 		players.insert(0,main_player)
 	else:
 		players.append(Player(i, 1))
