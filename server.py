@@ -31,13 +31,19 @@ s.listen(2)
 print("Waiting...")
 
 card_array = dict()
+num_ready = 0
 
 def threaded_client(conn, id):
 	global num_clients
 	global card_array
+	global num_ready
 	conn.send(str.encode("%d,%d" %(id, num_clients)))
 	print("Received:", conn.recv(2048).decode("utf-8"))
+	num_ready += 1
 	reply = ""
+	while num_ready != num_clients:
+		continue
+	conn.send(str.encode("ACK"))
 	while True:
 		try:
 			data = conn.recv(2048).decode("utf-8")

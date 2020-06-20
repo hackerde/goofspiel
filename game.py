@@ -19,16 +19,29 @@ def redrawWindow(cards, table, win):
 		card.x = width//2-43
 		card.y = height//2-30
 			
-		if i == 1:
-			card.x -= 130
-			card.y -= 100
+		if len(table) == 2:
+			if i == 1:
+				card.y -= 200
 
-		if i == 2:
-			card.y -= 200
+		if len(table) == 3:
+			if i == 1:
+				card.y -= 160
+				card.x += 90
+			if i == 2:
+				card.y -= 160
+				card.x -= 90
 
-		if i == 3:
-			card.x += 130
-			card.y -= 100
+		if len(table) == 4:
+			if i == 1:
+				card.x -= 130
+				card.y -= 100
+
+			if i == 2:
+				card.y -= 200
+
+			if i == 3:
+				card.x += 130
+				card.y -= 100
 
 		card.rect.topleft = (card.x, card.y)
 		card.draw(win)
@@ -205,7 +218,7 @@ for i in range(num_players):
 		if computer:
 			players.append(Player(i, 1, comp=True))
 		else:
-			players.append(Player(i, 1, comp=False))
+			players.append(Player(i, 1))
 
 if not computer:
 	for i in range(len(players)):
@@ -216,6 +229,7 @@ if not computer:
 		score_board[players[i].id] = score
 
 c.send("%d: Ready to start." %main_player_id)
+c.recv()
 
 play_game(players, main_player)
 print_result(players)
