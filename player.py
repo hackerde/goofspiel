@@ -3,7 +3,7 @@ from round import Round
 
 class Player:
 
-	def __init__(self, id, type=0):
+	def __init__(self, id, type=0, comp=False):
 		self.id = id
 		self.type = type
 		self.allCards = list(range(1,14))
@@ -13,9 +13,12 @@ class Player:
 		x = 30
 		y = 550
 		for i in range(1,14):
-			c = Card(x,y,i,"images/Heart_%d.png" %i)
-			x += c.rect.width+1
-			self.hand[i] = c
+			if not comp:
+				c = Card(x,y,i,"images/Heart_%d.png" %i)
+				x += c.rect.width+1
+				self.hand[i] = c
+			else:
+				self.hand[i] = i
 
 	def play(self, card=0):
 		if card in self.hand.keys():
