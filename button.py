@@ -1,13 +1,14 @@
 import pygame
 
 class Button():
-	def __init__(self, color, x,y,width,height, text=''):
+	def __init__(self, color, x,y,width,height, text='', score=""):
 		self.color = color
 		self.x = x
 		self.y = y
 		self.width = width
 		self.height = height
 		self.text = text
+		self.score = score
 
 	def draw(self,win,outline=None):
 		if outline:
@@ -15,7 +16,12 @@ class Button():
 		
 		pygame.draw.rect(win, self.color, (self.x,self.y,self.width,self.height),0)
 
-		if self.text != '':
+		if self.text != '' and self.score != "":
+			font = pygame.font.SysFont('arial', 30)
+			text = font.render(self.text+"    "+self.score, 1, (0,0,0))
+			win.blit(text, (self.x + 5, self.y + (self.height/2 - text.get_height()/2)))
+
+		if self.text != '' and self.score == "":
 			font = pygame.font.SysFont('arial', 30)
 			text = font.render(self.text, 1, (0,0,0))
 			win.blit(text, (self.x + (self.width/2 - text.get_width()/2), self.y + (self.height/2 - text.get_height()/2)))

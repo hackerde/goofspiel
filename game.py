@@ -16,6 +16,7 @@ win = pygame.display.set_mode((width, height))
 pygame.display.set_caption("Goofspiel")
 
 playButton = Button((220,220,220), 600, 700, 80, 60, 'Play')
+score_board = dict()
 
 def redrawWindow(cards, table, win, turn=True):
 
@@ -41,6 +42,8 @@ def redrawWindow(cards, table, win, turn=True):
 		card.rect.topleft = (card.x, card.y)
 		card.draw(win)
 	playButton.draw(win, (0,0,0))
+	for score in score_board.values():
+		score.draw(win, (0,0,0))
 	pygame.display.update()
 
 def play_game(Players, main_player):
@@ -119,6 +122,8 @@ def play_game(Players, main_player):
 			print("Round won by: Player %d" %current_round.leaders[0])
 		for player in Players:
 			player.update(current_round)
+			score_board[player.id].score = str(player.points)
+		redrawWindow(main_player.hand.values(), table, win, False)
 		sleep(2)
 
 def print_result(Players):
@@ -129,7 +134,7 @@ def print_result(Players):
 		if player.points > max_score:
 			max_score = player.points
 
-	print("The winner(s) is(are): ", end="")
+	print("The winner is: ", end="")
 	for player in Players:
 		if player.points == max_score:
 			print("Player %d" %player.id, end=" ")
@@ -178,6 +183,12 @@ for i in range(num_players):
 	else:
 		players.append(Player(i, 1))
 
+for i in range(len(players)):
+	if players[i].id == main_player_id:
+		score = Button((255,255,255), 20, 20+50*i, 150, 50, "Score:", "0")
+	else:
+		score = Button((255,255,255), 20, 20+50*i, 150, 50, "Player %d:" %players[i].id, "0")
+	score_board[players[i].id] = score
 
 c.send("%d: Ready to start." %main_player_id)
 
